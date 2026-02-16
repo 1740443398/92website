@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title>九（2）班 - 班级网站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2A5EA8',
+                        secondary: '#4A80CC',
+                        accent: '#7B93B8',
+                        dark: '#333333',
+                        light: '#F9FAFC',
+                        notice: '#E6A800',
+                        success: '#0E9E70',
+                    },
+                    fontFamily: {
+                        sans: ['Microsoft YaHei', 'PingFang SC', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .card-hover {
+                transition: all 0.2s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+            .bg-blur {
+                backdrop-filter: blur(4px);
+            }
+            .gallery-item {
+                position: relative;
+                overflow: hidden;
+            }
+            .gallery-item img {
+                transition: transform 0.3s ease;
+            }
+            .gallery-item:hover img {
+                transform: scale(1.03);
+            }
+            .gallery-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+                padding: 15px;
+                transform: translateY(100%);
+                transition: transform 0.2s ease;
+            }
+            .gallery-item:hover .gallery-overlay {
+                transform: translateY(0);
+            }
+            .notice-card-hover {
+                transition: all 0.2s ease;
+            }
+            .notice-card-hover:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+            .link-card {
+                transition: all 0.2s ease;
+            }
+            .link-card:hover {
+                background-color: rgba(42, 94, 168, 0.05);
+                transform: translateX(3px);
+            }
+            .rule-section {
+                scroll-margin-top: 80px;
+            }
+            .notice-content {
+                line-height: 1.7;
+                white-space: pre-line;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light min-h-screen font-sans text-dark">
+
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 bg-white/95 bg-blur shadow-sm z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-18">
+                <div class="flex items-center">
+                    <a href="#hero" class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-white text-lg">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div>
+                            <span class="block text-sm font-semibold text-dark">九（2）班</span>
+                            <span class="block text-xs text-gray-500">班级主页</span>
+                        </div>
+                    </a>
+                </div>
+
+                <nav class="hidden md:flex items-center space-x-1">
+                    <a href="#rules" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5">班级规章</a>
+                    <a href="#notices" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5">通知公告</a>
+                    <a href="#gallery" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5">班级相册</a>
+                    <a href="#academics" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5">学习园地</a>
+                    <a href="#honors" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5">班级荣誉</a>
+                    <a href="#contact" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5">联系我们</a>
+                </nav>
+
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-primary focus:outline-none p-2">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md rounded-b-lg absolute w-full border-t border-gray-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#rules" class="text-dark hover:text-primary block px-3 py-2 rounded-md text-base font-medium">班级规章</a>
+                <a href="#notices" class="text-dark hover:text-primary block px-3 py-2 rounded-md text-base font-medium">通知公告</a>
+                <a href="#gallery" class="text-dark hover:text-primary block px-3 py-2 rounded-md text-base font-medium">班级相册</a>
+                <a href="#academics" class="text-dark hover:text-primary block px-3 py-2 rounded-md text-base font-medium">学习园地</a>
+                <a href="#honors" class="text-dark hover:text-primary block px-3 py-2 rounded-md text-base font-medium">班级荣誉</a>
+                <a href="#contact" class="text-dark hover:text-primary block px-3 py-2 rounded-md text-base font-medium">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 英雄区域 -->
+        <section id="hero" class="pt-24 md:pt-28 pb-16 md:pb-24">
+            <div class="container mx-auto text-center">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-primary">
+                        九（2）班班级主页
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+                        记录成长，凝聚力量，一起为中考加油！
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#rules" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all flex items-center justify-center">
+                            <i class="fas fa-book mr-2"></i> 班级规章
+                        </a>
+                        <a href="#academics" class="bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-lg font-medium transition-all flex items-center justify-center">
+                            <i class="fas fa-graduation-cap mr-2"></i> 学习园地
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 班级规章 -->
+        <section id="rules" class="py-14 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4 flex items-center justify-center">
+                            <i class="fas fa-scroll text-primary mr-3"></i>初三（2）班班规
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            共同遵守的行为准则，一起维护班级秩序，冲刺中考！
+                        </p>
+                    </div>
+
+                    <!-- 班规快速导航 -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-8">
+                        <a href="#rule1" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">品德修养</a>
+                        <a href="#rule2" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">学习成长</a>
+                        <a href="#rule3" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">纪律规范</a>
+                        <a href="#rule4" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">文明礼仪</a>
+                        <a href="#rule5" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">安全责任</a>
+                        <a href="#rule6" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">课间纪律</a>
+                        <a href="#rule7" class="px-4 py-2 bg-gray-100 hover:bg-primary/10 rounded-lg text-sm font-medium text-dark hover:text-primary">附则</a>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- 一、品德修养篇 -->
+                        <div id="rule1" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-heart text-primary mr-2"></i>一、品德修养
+                            </h3>
+                            <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                                <li>诚实守信，不撒谎、不抄袭作业，做错事主动承认并改正。</li>
+                                <li>团结同学，尊重每个人的个性，不欺负、不排挤他人。</li>
+                                <li>体谅父母，尊重老师，主动沟通学习和生活中的问题。</li>
+                                <li>维护班级荣誉，对待班级事务不偏袒、不推诿。</li>
+                            </ul>
+                        </div>
+                        <!-- 二、学习成长篇 -->
+                        <div id="rule2" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-book-open text-primary mr-2"></i>二、学习成长
+                            </h3>
+                            <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                                <li>课前准备好学习用品，快速进入学习状态。</li>
+                                <li>课堂专心听讲，不做与学习无关的事，积极回答问题。</li>
+                                <li>按时独立完成作业，书写工整，不拖延、不敷衍。</li>
+                                <li>合理安排时间，高效利用早读、自习课，不浪费备考时间。</li>
+                                <li>遇到难题主动请教，互帮互助，共同进步。</li>
+                            </ul>
+                        </div>
+                        <!-- 三、纪律规范篇 -->
+                        <div id="rule3" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-gavel text-primary mr-2"></i>三、纪律规范
+                            </h3>
+                            <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                                <li>遵守作息时间，不迟到、不早退，有事提前请假。</li>
+                                <li>课堂保持安静，回答问题先举手，不随意插话。</li>
+                                <li>爱护班级公物，不损坏桌椅、设备等。</li>
+                                <li>不携带手机、游戏机等电子设备进校园。</li>
+                            </ul>
+                        </div>
+                        <!-- 四、文明礼仪篇 -->
+                        <div id="rule4" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-handshake text-primary mr-2"></i>四、文明礼仪
+                            </h3>
+                            <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                                <li>着装整洁，符合中学生规范，不佩戴首饰、不穿奇装异服。</li>
+                                <li>语言文明，使用礼貌用语，不骂人、不说脏话。</li>
+                                <li>上下楼梯靠右行，排队不插队，保持公共秩序。</li>
+                                <li>配合值日生工作，保持班级和校园卫生。</li>
+                            </ul>
+                        </div>
+                        <!-- 五、安全责任篇 -->
+                        <div id="rule5" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-shield-alt text-primary mr-2"></i>五、安全责任
+                            </h3>
+                            <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                                <li>遵守校园安全规定，不攀爬危险设施、不做危险游戏。</li>
+                                <li>注意个人卫生，配合班级做好防疫工作。</li>
+                                <li>不携带危险品进校园，发现安全隐患及时报告。</li>
+                                <li>课间不在走廊、楼梯口聚集，避免拥挤踩踏。</li>
+                            </ul>
+                        </div>
+                        <!-- 六、初三专属课间纪律篇 -->
+                        <div id="rule6" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-clock text-primary mr-2"></i>六、课间纪律
+                            </h3>
+                            <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                                <li>课间活动以放松为主，不追逐打闹、不攀爬跳跃。</li>
+                                <li>不在教室、走廊大声喧哗，保持公共区域安静。</li>
+                                <li>提前准备下节课用品，不拖延至上课铃响后行动。</li>
+                                <li>讨论学习问题要小声，不扎堆吵闹，不影响他人休息。</li>
+                                <li>不串班闲逛，不玩电子设备，专注备考。</li>
+                            </ul>
+                        </div>
+                        <!-- 附则 -->
+                        <div id="rule7" class="rule-section bg-gray-50 p-5 rounded-lg">
+                            <h3 class="text-lg font-semibold text-dark mb-3 flex items-center">
+                                <i class="fas fa-file-alt text-primary mr-2"></i>附则
+                            </h3>
+                            <p class="text-gray-700">
+                                本班规适用于初三学年日常学习生活，全体同学应自觉遵守、相互监督，共同营造良好的班级氛围，为中考备考保驾护航。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 通知公告（后端动态渲染版） -->
+        <section id="notices" class="py-14 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4 flex items-center justify-center">
+                            <i class="fas fa-bullhorn text-primary mr-3"></i>通知公告
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            最新班级通知，请注意查看
+                        </p>
+                    </div>
+                    <!-- 后端动态渲染容器 -->
+                    <div id="notice-list" class="space-y-6"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 班级相册（原始16张图片动态加载） -->
+        <section id="gallery" class="py-14 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4 flex items-center justify-center">
+                            <i class="fas fa-images text-primary mr-3"></i>班级相册
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            记录我们的美好瞬间
+                        </p>
+                    </div>
+
+                    <!-- 2026元旦联欢会 -->
+                    <div class="mb-12">
+                        <h3 class="text-xl font-semibold text-dark mb-6 flex items-center justify-center">
+                            <i class="fas fa-party-horn text-accent mr-3"></i>2026元旦联欢会
+                        </h3>
+                        
+                        <div id="photo-gallery-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习园地（保留所有下载功能） -->
+        <section id="academics" class="py-14 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4 flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-primary mr-3"></i>学习园地
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            学习资源汇总，助力中考备考
+                        </p>
+                    </div>
+
+                    <!-- 资源下载 -->
+                    <div class="bg-white rounded-lg shadow-sm p-5 card-hover">
+                        <h3 class="text-lg font-semibold text-dark mb-4 flex items-center">
+                            <i class="fas fa-download text-secondary mr-2"></i>学习资源下载
+                        </h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <i class="fas fa-file-word text-blue-500 mr-3"></i>
+                                <span class="flex-1">人教版初中数学电子课本</span>
+                                <a href="https://jc.pep.com.cn/" target="_blank" class="text-primary hover:text-primary/80 text-sm font-medium">访问官网</a>
+                            </li>
+                            <li class="flex items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <i class="fas fa-file-word text-blue-500 mr-3"></i>
+                                <span class="flex-1">英语讲义</span>
+                                <a href="https://www.123865.com/s/nVp9vd-g3RYd" target="_blank" class="text-primary hover:text-primary/80 text-sm font-medium">下载</a>
+                            </li>
+                            <li class="flex items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <i class="fas fa-file-word text-blue-500 mr-3"></i>
+                                <span class="flex-1">初中物理电学知识点总结</span>
+                                <a href="ziyuan/wuli_lizhi.docx" download class="text-primary hover:text-primary/80 text-sm font-medium">下载</a>
+                            </li>
+                            <li class="flex items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <i class="fas fa-file-word text-blue-500 mr-3"></i>
+                                <span class="flex-1">中考满分作文精选集</span>
+                                <a href="ziyuan/zuowen_jingxuan.docx" download class="text-primary hover:text-primary/80 text-sm font-medium">下载</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 班级荣誉墙（改为后端动态加载） -->
+        <section id="honors" class="py-14 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4 flex items-center justify-center">
+                            <i class="fas fa-trophy text-primary mr-3"></i>班级荣誉
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            我们的共同成就
+                        </p>
+                    </div>
+
+                    <!-- 后端动态渲染荣誉墙容器 -->
+                    <div id="honors-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系我们（增加班主任电话显示，移除邮箱功能） -->
+        <section id="contact" class="py-14 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4 flex items-center justify-center">
+                            <i class="fas fa-phone text-primary mr-3"></i>联系我们
+                        </h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                            家校沟通，携手共进
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-6 shadow-sm mb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">班主任联系方式</h3>
+                                <ul class="space-y-3 text-gray-700">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-mobile-alt text-primary mr-3 text-xl"></i>
+                                        <span>18155429254</span> <!-- 显示班主任电话 -->
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-wechat text-success mr-3 text-xl"></i>
+                                        <span>dreampig0810</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-envelope text-secondary mr-3"></i>
+                                        <span>不知道</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">家长群信息</h3>
+                                <ul class="space-y-3 text-gray-700">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-weixin text-success mr-3 text-xl"></i>
+                                        <span>九（2）班家长群</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-qq text-blue-500 mr-3 text-xl"></i>
+                                        <span>QQ群：没有</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 意见反馈表单（仅提交到后端，移除邮箱功能） -->
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <i class="fas fa-comment-dots text-primary mr-2"></i>意见反馈
+                        </h3>
+                        <form id="feedback-form" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                                <input type="text" id="name" name="name" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            </div>
+                            <div>
+                                <label for="contact" class="block text-sm font-medium text-gray-700 mb-1">联系方式（选填）</label>
+                                <input type="text" id="contact" name="contact"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-700 mb-1">反馈内容</label>
+                                <textarea id="message" name="message" rows="4" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center justify-center">
+                                <i class="fas fa-paper-plane mr-2"></i> 提交反馈
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>九（2）班班级网站 © 2026 版权所有</p>
+            <p class="mt-2 text-sm text-white/80">淮南英才中学 · 初三（2）班</p>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.remove('shadow');
+                header.classList.add('shadow-sm');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // --- 动态加载相册图片（补全16张图片，classfengcai文件夹）---
+        (function loadGallery() {
+            const galleryContainer = document.getElementById('photo-gallery-container');
+            const imageFolder = 'classfengcai/'; // 图片文件夹路径
+
+            // 补全16张图片
+            const imageFiles = [
+                '3c58e109132eb2550a86ad5fb92958af.jpg',
+                '4c8def745b69048b4716dd27d7676fd0.jpg',
+                '6e8b31a0bae40702254cb69073ca7a28.jpg',
+                '08d3bbb82bdd823abe727e524f939b8b.jpg',
+                '452c90ffad05f4af53317d28d00d137b.jpg',
+                '735163c0402a070b1b28d7de8a9a5707.jpg',
+                'aaeedef8051c8d615f16987c24496710.jpg',
+                'ad464ea1fc32e452f3ef7879ab4d2e2b.jpg',
+                'c21fb31d5a82ff53a41381855fc038b8.jpg',
+                'c62b16d490ce4410500225e1c710a7d1.jpg',
+                'c8635d3de8bf2f71662c3c2851ad9b1c.jpg',
+                'd5cb12980948e04d6b5934aac6aa9101.jpg',
+                'e85ef807b46354eecef5402fb70aa937.jpg',
+                'e13212ac7938a8b26eac2ad516afb0f6.jpg',
+                'ea4faf4f9871dd81990e14a25ec8ee83.jpg',
+                'f8a7b5c9d8e7f6a5b4c3d2e1f0a9b8c7.jpg' // 新增第16张图片
+            ];
+
+            imageFiles.forEach((filename, index) => {
+                const imageUrl = `${imageFolder}${filename}`;
+                const imageCaption = `元旦联欢会精彩瞬间 (${index + 1})`;
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item rounded-lg overflow-hidden';
+                galleryItem.innerHTML = `
+                    <img src="${imageUrl}" alt="${imageCaption}" class="w-full h-48 object-cover">
+                    <div class="gallery-overlay">
+                        <p class="text-white text-sm">${imageCaption}</p>
+                    </div>
+                `;
+                // 图片加载失败容错
+                galleryItem.querySelector('img').addEventListener('error', function() {
+                    this.src = 'https://via.placeholder.com/400x240?text=图片加载失败';
+                    this.alt = '图片加载失败';
+                });
+                galleryContainer.appendChild(galleryItem);
+            });
+        })();
+
+        // --- 后端动态渲染通知核心代码（修复版）---
+        let noticeData = [];
+        fetch('./api/getNotices.php')
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP错误，状态码：${res.status}`);
+            return res.json();
+          })
+          .then(data => {
+            // 过滤无效数据：只保留title和content都不为空的通知
+            noticeData = Array.isArray(data) ? data.filter(item => item.title && item.content) : [];
+            renderNotices();
+          })
+          .catch(err => {
+            console.log('通知数据请求失败：', err);
+            // 容错处理
+            noticeData = [{
+              title: "通知加载失败",
+              date: new Date().toLocaleDateString('zh-CN'),
+              type: "notice",
+              content: "当前通知数据暂时无法加载，请稍后刷新页面重试！",
+              source: "系统提示"
+            }];
+            renderNotices();
+          });
+
+        // 通知渲染函数（修复版）
+        function renderNotices() {
+            const noticeList = document.getElementById('notice-list');
+            noticeList.innerHTML = ''; 
+            const sortedNotices = [...noticeData].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            if (sortedNotices.length === 0) {
+                const emptyNotice = document.createElement('div');
+                emptyNotice.className = 'text-center py-10 text-gray-500';
+                emptyNotice.innerHTML = `
+                    <i class="fas fa-bell text-4xl mb-3 text-gray-300"></i>
+                    <p>暂无通知公告</p>
+                `;
+                noticeList.appendChild(emptyNotice);
+                return;
+            }
+            
+            sortedNotices.forEach(notice => {
+                const iconMap = { notice: 'bell', success: 'star', secondary: 'calendar-check' };
+                const icon = iconMap[notice.type] || 'bell';
+                const colorMap = {
+                    notice: 'notice',
+                    success: 'success',
+                    secondary: 'secondary'
+                };
+                const color = colorMap[notice.type] || 'notice';
+                
+                const noticeCard = document.createElement('div');
+                noticeCard.className = `bg-white rounded-lg p-6 shadow-sm notice-card-hover border-l-4 border-${color}`;
+                noticeCard.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="bg-${color}/10 text-${color} p-2 rounded-lg mr-4 mt-1 flex-shrink-0">
+                            <i class="fas fa-${icon} text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap justify-between items-start mb-3 gap-2">
+                                <h3 class="text-lg font-semibold text-dark">${htmlEscape(notice.title)}</h3>
+                                <span class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">${notice.date}</span>
+                            </div>
+                            <div class="border-t border-gray-100 pt-3 notice-content text-gray-700">
+                                ${htmlEscape(notice.content).replace(/\n/g, '<br>')}
+                            </div>
+                            ${notice.source ? `<p class="mt-3 text-xs text-gray-500">来源：${htmlEscape(notice.source)}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+                noticeList.appendChild(noticeCard);
+            });
+        }
+
+        // --- 动态加载班级荣誉数据（修复版）---
+        let honorsData = [];
+        fetch('./api/getHonors.php')
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP错误，状态码：${res.status}`);
+            return res.json();
+          })
+          .then(data => {
+            // 过滤无效数据：只保留title、description、date都不为空的荣誉
+            honorsData = Array.isArray(data) ? data.filter(item => item.title && item.description && item.date) : [];
+            renderHonors();
+          })
+          .catch(err => {
+            console.log('荣誉数据请求失败：', err);
+            // 容错处理
+            honorsData = [{
+              title: "校级文明班级",
+              color: "amber",
+              icon: "award",
+              description: "2025-2026学年第一学期，因班风正、学风浓荣获此称号。",
+              date: "2025年11月"
+            }, {
+              title: "秋季运动会团体第二",
+              color: "blue",
+              icon: "award",
+              description: "2025年秋季田径运动会，团结拼搏取得团体总分第二名。",
+              date: "2025年9月"
+            }];
+            renderHonors();
+          });
+
+        // 班级荣誉渲染函数（修复版）
+        function renderHonors() {
+            const honorsList = document.getElementById('honors-list');
+            honorsList.innerHTML = ''; 
+            
+            if (honorsData.length === 0) {
+                const emptyHonor = document.createElement('div');
+                emptyHonor.className = 'col-span-full text-center py-10 text-gray-500';
+                emptyHonor.innerHTML = `
+                    <i class="fas fa-trophy text-4xl mb-3 text-gray-300"></i>
+                    <p>暂无班级荣誉，一起创造更多成就吧！</p>
+                `;
+                honorsList.appendChild(emptyHonor);
+                return;
+            }
+            
+            honorsData.forEach(honor => {
+                // 匹配tailwind颜色类名
+                const colorClass = {
+                    amber: 'amber-500',
+                    blue: 'blue-500',
+                    green: 'green-500',
+                    red: 'red-500',
+                    purple: 'purple-500'
+                };
+                const textColor = colorClass[honor.color] || 'amber-500';
+                const textColor800 = textColor.replace('500', '800');
+                
+                const honorCard = document.createElement('div');
+                honorCard.className = 'bg-gray-50 rounded-lg p-5 border border-gray-200 card-hover';
+                honorCard.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-${honor.icon || 'award'} text-${textColor} text-2xl mr-3"></i>
+                        <h3 class="text-lg font-bold text-${textColor800}">${htmlEscape(honor.title)}</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">${htmlEscape(honor.description).replace(/\n/g, '<br>')}</p>
+                    <p class="text-right text-xs text-gray-500 mt-2">${htmlEscape(honor.date)}</p>
+                `;
+                honorsList.appendChild(honorCard);
+            });
+        }
+
+        // --- 意见反馈表单提交到后端 ---
+        document.getElementById('feedback-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 获取表单数据
+            const formData = {
+                name: document.getElementById('name').value,
+                contact: document.getElementById('contact').value,
+                message: document.getElementById('message').value,
+                submitTime: new Date().toISOString()
+            };
+
+            try {
+                // 提交到后端接口
+                const response = await fetch('/api/submitFeedback.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('反馈提交成功！感谢您的建议。');
+                    this.reset(); // 重置表单
+                    
+                    // 同时尝试打开邮件客户端（保留原有邮件功能）
+                    const subject = `九（2）班网站意见反馈 - ${formData.name}`;
+                    const body = `姓名：${formData.name}\n联系方式：${formData.contact || '无'}\n反馈内容：\n${formData.message}`;
+                    const toEmail = '1740443398@qq.com';
+                    const mailtoLink = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    window.location.href = mailtoLink;
+                } else {
+                    alert('反馈提交失败：' + (result.message || '服务器错误，请稍后重试'));
+                }
+            } catch (error) {
+                console.error('提交反馈出错：', error);
+                alert('反馈提交失败，请检查网络连接或稍后重试。');
+            }
+        });
+
+        // 辅助函数：HTML转义，防止XSS
+        function htmlEscape(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+[
+    {
+        "id": "honor_1",
+        "title": "校级文明班级",
+        "color": "amber",
+        "icon": "award",
+        "description": "2025-2026学年第一学期，因班风正、学风浓荣获此称号。",
+        "date": "2025年11月"
+    },
+    {
+        "id": "honor_2",
+        "title": "秋季运动会团体第二",
+        "color": "blue",
+        "icon": "award",
+        "description": "2025年秋季田径运动会，团结拼搏取得团体总分第二名。",
+        "date": "2025年9月"
+    }
+]
